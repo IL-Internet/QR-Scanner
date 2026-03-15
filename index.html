@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QR Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 40px; }
+    #reader { width: 300px; margin: 0 auto; }
+    #result { margin-top: 20px; font-size: 18px; color: #333; }
+  </style>
+</head>
+<body>
+  <h2>Allow the page scan use the nuild in webcam, then let the camera see the qr as close as posible</h2>
+  <div id="reader"></div>
+  <div id="result">Scanned result will appear here (useally a text that is link but can be any other type of text as well)</div>
+
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      document.getElementById("result").innerHTML = 
+        "<b>Scanned:</b> " + decodedText;
+      html5QrCode.stop().then(() => {}).catch((err) => {});
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+    html5QrCode.start(
+      { facingMode: "environment" }, // Use back camera if available
+      { fps: 10, qrbox: 250 },
+      onScanSuccess
+    ).catch(err => {
+      document.getElementById("result").innerHTML = "<b>Error:</b> " + err;
+    });
+  </script>
+</body>
+</html>
